@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tpouget <cassepipe@ymail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 16:22:39 by tpouget           #+#    #+#             */
-/*   Updated: 2020/06/08 17:03:11 by tpouget          ###   ########.fr       */
+/*   Updated: 2020/08/15 15:33:23 by tpouget          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "get_next_line.h"
 
 size_t	ft_strlen(const char *s)
 {
@@ -44,21 +44,26 @@ char	*ft_strchr(const char *s, int c)
 		return (NULL);
 }
 
-char	*ft_strdup(const char *s)
+char	*ft_strndup(const char *s, size_t n)
 {
 	size_t	i;
+	size_t	len;
 	char	*duplicate;
 
 	i = 0;
-	duplicate = malloc((ft_strlen(s) + 1) * sizeof(char));
+	len = 0;
+	if (n)
+		while (len < n && s[len])
+			len++;
+	duplicate = malloc(len + 1);
 	if (!duplicate)
 		return (NULL);
-	while (s[i])
+	while (i < len)
 	{
 		duplicate[i] = s[i];
 		i++;
 	}
-	duplicate[i] = '\0';
+	duplicate[len] = '\0';
 	return (duplicate);
 }
 
@@ -90,9 +95,9 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	if (!s1 && !s2)
 		return (NULL);
 	if (!s1 || !*s1)
-		return (ft_strdup(s2));
+		return (ft_strndup(s2, SIZE_MAX));
 	if (!s2 || !*s2)
-		return (ft_strdup(s1));
+		return (ft_strndup(s1, SIZE_MAX));
 	len = ft_strlen(s1) + ft_strlen(s2);
 	if (!(joined = malloc(len + 1)))
 		return (NULL);
