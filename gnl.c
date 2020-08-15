@@ -1,5 +1,6 @@
 #include "get_next_line.h"
 #include <string.h>
+
 /*char *	find_newline_or_read(char **buffer, size_t *bufsize)*/
 /*{*/
 /*}*/
@@ -17,7 +18,6 @@ int	get_next_line(int fd, char **line)
 	if (fd < 0 || BUFFER_SIZE < 1
 		|| (!buffer && (!(buffer = calloc(sizeof(char), BUFFER_SIZE + 1)))))
 		return (-1);
-	line_size = 0;
 	bufsize = strlen(buffer) + 1;
 	while(!(newline = strchr(buffer, '\n')))
 	{
@@ -32,15 +32,13 @@ int	get_next_line(int fd, char **line)
 		free(temp);
 		bufsize += bytes_read;
 	}
-	line_size = bufsize;
-	if (newline)
-		line_size -= BUFFER_SIZE + (newline - buffer);
+	line_size = newline ? bufsize - BUFFER_SIZE + (newline - buffer) : bufsize;
 	temp = *line;
 	if (!(*line = strndup(buffer, line_size)))
 		return (-1);
 	free(temp);
 	temp = buffer;
-	if (!(buffer = strndup(++newline, bufsize - line_size))) //what if newline is NULL ?
+	if (!(buffer = strndup(++newline, bufsize - line_size))) //hypothesis : if !newline, line_size = bufsize, so we have strndup(nl, 0) --> returns empty string ?
 		return (-1);
 	free(temp);
 	return (newline ? 0 : 1);
