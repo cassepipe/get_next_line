@@ -6,7 +6,7 @@
 /*   By: tpouget <cassepipe@ymail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/01 10:48:06 by tpouget           #+#    #+#             */
-/*   Updated: 2020/08/16 09:59:57 by tpouget          ###   ########.fr       */
+/*   Updated: 2020/08/16 10:21:37 by tpouget          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ char		*ft_itoa(int n)
 }
 void	printbuffer(char *buffer, size_t size)
 {
+	write(1, "\n", 1);
 	char message[] = "Buffer :";
 	write(1, message, sizeof message);
 	size_t i = 0;

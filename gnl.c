@@ -33,8 +33,8 @@ int	get_next_line(int fd, char **line)
 	static char	*buffer;
 	char		*temp;
 	char		*newline;
-	size_t 	bufsize;
-	size_t 	line_len;
+	size_t		bufsize;
+	long 		line_len;
 
 	//Check initial
 	if (fd < 0 || BUFFER_SIZE < 1
@@ -46,7 +46,7 @@ int	get_next_line(int fd, char **line)
 	bufsize = strlen(buffer) + 1;
 	if (!grow_buffer_until_newline(fd, &buffer, &bufsize, &newline))
 		return (-1);
-	line_len = newline ? (newline - buffer) : bufsize;
+	line_len = newline ? (size_t)(newline - buffer) : bufsize;
 
 	/*printf("buff is at %ld\n", buffer);*/
 	/*printf("newline is at %ld\n", newline);*/
@@ -61,7 +61,7 @@ int	get_next_line(int fd, char **line)
 
 	//Recupere le reste du buffer apres le \n pour le prochain appel
 	temp = buffer;
-	if (!(buffer = ft_strndup(++newline, bufsize - line_len))) //hypothesis : if !newline, line_len = bufsize, so we have strndup(nl, 0) --> returns empty string
+	if (!(buffer = ft_strndup(newline + 1, bufsize - line_len))) //hypothesis : if !newline, line_len = bufsize, so we have strndup(nl, 0) --> returns empty string
 		return (-1);
 	free(temp);
 
@@ -76,7 +76,7 @@ int main(void)
 	int fd = fileno(file);
 	int ret;
 
-	for (int i = 0;  i < 8; i++)
+	for (int i = 0;  i < 15; i++)
 	{
 		ret = get_next_line(fd, &line);
 		*line ? printf("%s\n", line) : printf("Empty string\n");
