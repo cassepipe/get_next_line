@@ -7,6 +7,7 @@
 static int grow_buffer_until_newline(int fd, char **buffer,
 										size_t *bufsize, char** newline)
 {
+	char		*old_buffer;
 	char		*new_buffer;
 	ssize_t		bytes_read;
 
@@ -18,12 +19,16 @@ static int grow_buffer_until_newline(int fd, char **buffer,
 		else if (bytes_read < 0)
 			return (0);
 		new_buffer[bytes_read] = '\0';
-		if(!(*buffer = ft_strjoin(*buffer, new_buffer)))
+		old_buffer = *buffer;
+		if(!(*buffer = ft_strjoin(old_buffer, new_buffer)))
 			return (0);
+		free(old_buffer);
 		free(new_buffer);
 		*bufsize += bytes_read;
-		printbuffer(*buffer, *bufsize);
+		/*printbuffer(*buffer, *bufsize);*/
 	}
+	if (!bytes_read)
+		free(new_buffer);
 	return (1);
 }
 
@@ -65,51 +70,53 @@ int	get_next_line(int fd, char **line)
 		return (-1);
 	free(temp);
 
+	if (!newline)
+		free(buffer);
 	return (newline ? 1 : 0);
-}
-
-int main(void)
-{
-	char *line = NULL;
-	FILE *file;
-	file = fopen("input.txt", "r");
-	int fd = fileno(file);
-	int ret;
-
-	for (int i = 0;  i < 15; i++)
-	{
-		ret = get_next_line(fd, &line);
-		*line ? printf("%s\n", line) : printf("Empty string\n");
-		printf("Function returned %d\n", ret);
-	//	free(line);
-	}
-	fclose(file);
-	return (0);
 }
 
 /*int main(void)*/
 /*{*/
-
-	/*FILE *dest =  fopen("output.txt", "w");*/
-
 	/*char *line = NULL;*/
-	/*FILE *src = fopen("input.txt", "r");*/
-	/*int fd = fileno(src);*/
+	/*FILE *file;*/
+	/*file = fopen("input.txt", "r");*/
+	/*int fd = fileno(file);*/
+	/*int ret;*/
 
-	/*while (get_next_line(fd, &line))*/
+	/*for (int i = 0;  i < 15; i++)*/
 	/*{*/
-		/*printf("%s\n", line);*/
-		/*fprintf(dest, "%s\n", line);*/
-		/*free(line);*/
-		/*line = NULL;*/
+		/*ret = get_next_line(fd, &line);*/
+		/**line ? printf("%s\n", line) : printf("Empty string\n");*/
+		/*printf("Function returned %d\n", ret);*/
+	/*//	free(line);*/
 	/*}*/
-	/*[>printf("%s", line);<]*/
-	/*[>fprintf(dest, "%s", line);<]*/
-	/*free(line);*/
-
-	/*fclose(src);*/
+	/*fclose(file);*/
 	/*return (0);*/
 /*}*/
+
+int main(void)
+{
+
+	FILE *dest =  fopen("output.txt", "w");
+
+	char *line = NULL;
+	FILE *src = fopen("input.txt", "r");
+	int fd = fileno(src);
+
+	while (get_next_line(fd, &line))
+	{
+		printf("%s\n", line);
+		fprintf(dest, "%s\n", line);
+		free(line);
+		line = NULL;
+	}
+	printf("%s", line);
+	fprintf(dest, "%s", line);
+	free(line);
+
+	fclose(src);
+	return (0);
+}
 
 /*int main(void)*/
 /*{*/
