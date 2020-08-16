@@ -12,7 +12,6 @@ static int grow_buffer_until_newline(int fd, char **buffer,
 
 	while(!(*newline = strchr(*buffer, '\n')))
 	{
-		puts("Hello !\n");
 		new_buffer = malloc(BUFFER_SIZE + 1);
 		if(!(bytes_read = read(fd, new_buffer, BUFFER_SIZE)))
 			break;
@@ -35,43 +34,54 @@ int	get_next_line(int fd, char **line)
 	char		*temp;
 	char		*newline;
 	size_t 	bufsize;
-	size_t 	line_size;
+	size_t 	line_len;
 
+	//Check initial
 	if (fd < 0 || BUFFER_SIZE < 1
 		|| (!buffer && (!(buffer = calloc(sizeof(char), BUFFER_SIZE + 1)))))
 		return (-1);
-	puts("salut\n");
+
+	//Demande un buffer avec un \n dedans
 	newline = NULL;
 	bufsize = strlen(buffer) + 1;
 	if (!grow_buffer_until_newline(fd, &buffer, &bufsize, &newline))
 		return (-1);
-	line_size = newline ? bufsize - BUFFER_SIZE + (newline - buffer) : bufsize;
+	line_len = newline ? (newline - buffer) : bufsize;
+
+	/*printf("buff is at %ld\n", buffer);*/
+	/*printf("newline is at %ld\n", newline);*/
+	/*printf("buff size = %zu\n", bufsize);*/
+	/*printf("line size = %zu\n", line_len);*/
+
+	//Copie le buffer dans line jusquau \n
 	temp = *line;
-	if (!(*line = ft_strndup(buffer, line_size)))
+	if (!(*line = ft_strndup(buffer, line_len)))
 		return (-1);
 	free(temp);
+
+	//Recupere le reste du buffer apres le \n pour le prochain appel
 	temp = buffer;
-	if (!(buffer = ft_strndup(++newline, bufsize - line_size))) //hypothesis : if !newline, line_size = bufsize, so we have strndup(nl, 0) --> returns empty string ?
+	if (!(buffer = ft_strndup(++newline, bufsize - line_len))) //hypothesis : if !newline, line_len = bufsize, so we have strndup(nl, 0) --> returns empty string
 		return (-1);
 	free(temp);
-	puts("Ciao\n");
+
 	return (newline ? 1 : 0);
 }
 
 int main(void)
 {
-	char *line;
+	char *line = NULL;
 	FILE *file;
 	file = fopen("input.txt", "r");
 	int fd = fileno(file);
 	int ret;
 
-	for (int i = 0;  i < 3; i++)
+	for (int i = 0;  i < 8; i++)
 	{
 		ret = get_next_line(fd, &line);
 		*line ? printf("%s\n", line) : printf("Empty string\n");
 		printf("Function returned %d\n", ret);
-		free(line);
+	//	free(line);
 	}
 	fclose(file);
 	return (0);
