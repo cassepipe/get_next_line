@@ -59,16 +59,12 @@ int	get_next_line(int fd, char **line)
 	/*printf("line size = %zu\n", line_len);*/
 
 	//Copie le buffer dans line jusquau \n
-	temp = *line;
 	if (!(*line = ft_strndup(buffer, line_len)))
 		return (-1);
-	free(temp);
 
 	//Recupere le reste du buffer apres le \n pour le prochain appel
-	temp = buffer;
 	if (!(buffer = ft_strndup(newline + 1, bufsize - line_len))) //hypothesis : if !newline, line_len = bufsize, so we have strndup(nl, 0) --> returns empty string
 		return (-1);
-	free(temp);
 
 	if (!newline)
 		free(buffer);
@@ -105,12 +101,12 @@ int main(void)
 
 	while (get_next_line(fd, &line))
 	{
-		printf("%s\n", line);
+		/*printf("%s\n", line);*/
 		fprintf(dest, "%s\n", line);
 		free(line);
 		line = NULL;
-	}
-	printf("%s", line);
+}
+	/*printf("%s", line);*/
 	fprintf(dest, "%s", line);
 	free(line);
 
