@@ -6,7 +6,7 @@
 /*   By: tpouget <cassepipe@ymail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 17:55:59 by tpouget           #+#    #+#             */
-/*   Updated: 2020/08/21 18:02:43 by tpouget          ###   ########.fr       */
+/*   Updated: 2020/08/21 18:33:39 by tpouget          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 static int	grow_buffer_until_newline(int fd, char **buffer,
 									size_t *bufsize, char **newline)
 {
-	char		*old_buffer;
 	char		*new_buffer;
 	ssize_t		bytes_read;
 
 	while (!(*newline = ft_strchr(*buffer, '\n')))
 	{
-		new_buffer = malloc(BUFFER_SIZE + 1);
+		if (!(new_buffer = malloc(BUFFER_SIZE + 1)))
+			return (0);
 		if (!(bytes_read = read(fd, new_buffer, BUFFER_SIZE)))
 		{
 			free(new_buffer);
@@ -33,11 +33,8 @@ static int	grow_buffer_until_newline(int fd, char **buffer,
 			return (0);
 		}
 		new_buffer[bytes_read] = '\0';
-		old_buffer = *buffer;
-		if (!(*buffer = ft_strjoin(old_buffer, new_buffer)))
+		if (!(*buffer = ft_strjoin_and_free(*buffer, new_buffer)))
 			return (0);
-		free(old_buffer);
-		free(new_buffer);
 		*bufsize += bytes_read;
 	}
 	return (1);
@@ -53,8 +50,9 @@ int			get_next_line(int fd, char **line)
 
 	if (fd < 0 || BUFFER_SIZE < 1)
 		return (-1);
-	if (!buffer[fd] && (!(buffer[fd] = ft_calloc(BUFFER_SIZE + 1, sizeof(char)))))
-		return (-1);
+	if (!buffer[fd])
+		if (!(buffer[fd] = ft_calloc(BUFFER_SIZE + 1, sizeof(char))))
+			return (-1);
 	newline = NULL;
 	bufsize = ft_strlen(buffer[fd]) + 1;
 	if (!grow_buffer_until_newline(fd, &buffer[fd], &bufsize, &newline))
