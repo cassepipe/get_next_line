@@ -6,7 +6,7 @@
 /*   By: tpouget <cassepipe@ymail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 16:22:39 by tpouget           #+#    #+#             */
-/*   Updated: 2020/08/21 17:39:56 by tpouget          ###   ########.fr       */
+/*   Updated: 2020/08/21 17:38:42 by tpouget          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	total_size = nmemb * size;
 	memory = malloc(total_size);
 	if (!memory)
-		return NULL;
+		return (NULL);
 	i = 0;
-	while(i < total_size)
+	while (i < total_size)
 	{
 		memory[i] = '\0';
 		i++;
