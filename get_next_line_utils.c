@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tpouget <cassepipe@ymail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 16:22:39 by tpouget           #+#    #+#             */
-/*   Updated: 2020/08/15 15:33:23 by tpouget          ###   ########.fr       */
+/*   Updated: 2020/08/21 16:18:39 by tpouget          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,9 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t size)
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	size_t	len;
-	char	*joined;
 	size_t	i;
+	size_t	j;
+	char	*joined;
 
 	if (!s1 && !s2)
 		return (NULL);
@@ -101,10 +102,18 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	len = ft_strlen(s1) + ft_strlen(s2);
 	if (!(joined = malloc(len + 1)))
 		return (NULL);
-	ft_strlcpy(joined, s1, len + 1);
 	i = 0;
-	while (i < len + 1 && joined[i])
+	while (s1[i])
+	{
+		joined[i] = s1[i];
 		i++;
-	ft_strlcpy(joined + i, s2, len + 1 - i);
+	}
+	j = 0;
+	while (s2[j])
+	{
+		joined[i + j] = s2[j];
+		j++;
+	}
+	joined[i + j] = '\0';
 	return (joined);
 }

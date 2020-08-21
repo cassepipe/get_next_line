@@ -1,3 +1,6 @@
-wrgerugjreuretjertete
-ttreteertteertqw
-rtertreteterte
+Ceci est la premiere ligne du fichier 1.
+Ceci est la deuxieme ligne du deuxieme fichier.
+Ceci est la troisieme et derniere ligne du dernier fichier.
+Ceci est la premiere ligne du fichier 1.
+Ceci est la deuxieme ligne du deuxieme fichier.
+Ceci est la troisieme et derniere ligne du dernier fichier.
