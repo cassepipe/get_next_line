@@ -46,7 +46,7 @@ int			get_next_line(int fd, char **line)
 
 	//Check initial
 	if (fd < 0 || BUFFER_SIZE < 1
-		|| (!buffer[fd] && (!(buffer[fd] = calloc(sizeof(char), BUFFER_SIZE + 1)))))
+		|| (!buffer[fd] && (!(buffer[fd] = ft_calloc(BUFFER_SIZE + 1, sizeof(char))))))
 		return (-1);
 
 	//Demande un buffer avec un \n dedans

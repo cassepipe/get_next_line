@@ -6,7 +6,7 @@
 /*   By: tpouget <cassepipe@ymail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 16:22:39 by tpouget           #+#    #+#             */
-/*   Updated: 2020/08/21 16:18:39 by tpouget          ###   ########.fr       */
+/*   Updated: 2020/08/21 16:52:29 by tpouget          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,25 @@ size_t	ft_strlen(const char *s)
 		len++;
 	}
 	return (len);
+}
+
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	char	*memory;
+	size_t	i;
+	size_t	total_size;
+
+	total_size = nmemb * size;
+	memory = malloc(total_size);
+	if (!memory)
+		return NULL;
+	i = 0;
+	while(i < total_size)
+	{
+		memory[i] = '\0';
+		i++;
+	}
+	return (memory);
 }
 
 char	*ft_strchr(const char *s, int c)
@@ -65,25 +84,6 @@ char	*ft_strndup(const char *s, size_t n)
 	}
 	duplicate[len] = '\0';
 	return (duplicate);
-}
-
-size_t	ft_strlcpy(char *dst, const char *src, size_t size)
-{
-	size_t i;
-
-	i = 0;
-	if (size > 0)
-	{
-		while (src[i])
-		{
-			if (i + 1 == size)
-				break ;
-			dst[i] = src[i];
-			i++;
-		}
-		dst[i] = '\0';
-	}
-	return (ft_strlen(src));
 }
 
 char	*ft_strjoin(char const *s1, char const *s2)
