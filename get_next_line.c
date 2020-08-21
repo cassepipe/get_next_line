@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 
-static int grow_buffer_until_newline(int fd, char **buffer,
+static int	grow_buffer_until_newline(int fd, char **buffer,
 										size_t *bufsize, char** newline)
 {
 	char		*old_buffer;
@@ -36,9 +36,9 @@ static int grow_buffer_until_newline(int fd, char **buffer,
 }
 
 
-int	get_next_line(int fd, char **line)
+int			get_next_line(int fd, char **line)
 {
-	static char	*buffer;
+	static char	*buffer[OPEN_MAX];
 	char		*temp;
 	char		*newline;
 	size_t		bufsize;
@@ -46,32 +46,32 @@ int	get_next_line(int fd, char **line)
 
 	//Check initial
 	if (fd < 0 || BUFFER_SIZE < 1
-		|| (!buffer && (!(buffer = calloc(sizeof(char), BUFFER_SIZE + 1)))))
+		|| (!buffer[fd] && (!(buffer[fd] = calloc(sizeof(char), BUFFER_SIZE + 1)))))
 		return (-1);
 
 	//Demande un buffer avec un \n dedans
 	newline = NULL;
-	bufsize = strlen(buffer) + 1;
-	if (!grow_buffer_until_newline(fd, &buffer, &bufsize, &newline))
+	bufsize = strlen(buffer[fd]) + 1;
+	if (!grow_buffer_until_newline(fd, &buffer[fd], &bufsize, &newline))
 		return (-1);
-	line_len = newline ? (size_t)(newline - buffer) : bufsize;
+	line_len = newline ? (size_t)(newline - buffer[fd]) : bufsize;
 
-	/*printf("buff is at %ld\n", buffer);*/
+	/*printf("buff is at %ld\n", buffer[fd]);*/
 	/*printf("newline is at %ld\n", newline);*/
 	/*printf("buff size = %zu\n", bufsize);*/
 	/*printf("line size = %zu\n", line_len);*/
 
 	//Copie le buffer dans line jusquau \n
-	if (!(*line = ft_strndup(buffer, line_len)))
+	if (!(*line = ft_strndup(buffer[fd], line_len)))
 		return (-1);
 
 	//Recupere le reste du buffer apres le \n pour le prochain appel
-	temp = buffer;
-	if (!(buffer = ft_strndup(newline + 1, bufsize - line_len))) //hypothesis : if !newline, line_len = bufsize, so we have strndup(nl, 0) --> returns empty string
+	temp = buffer[fd];
+	if (!(buffer[fd] = ft_strndup(newline + 1, bufsize - line_len))) //hypothesis : if !newline, line_len = bufsize, so we have strndup(nl, 0) --> returns empty string
 		return (-1);
 	free(temp);
 
 	if (!newline)
-		free(buffer);
+		free(buffer[fd]);
 	return (newline ? 1 : 0);
 }
