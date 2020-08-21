@@ -6,7 +6,7 @@
 /*   By: tpouget <cassepipe@ymail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 16:22:39 by tpouget           #+#    #+#             */
-/*   Updated: 2020/08/21 16:52:29 by tpouget          ###   ########.fr       */
+/*   Updated: 2020/08/21 17:39:56 by tpouget          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ char	*ft_strndup(const char *s, size_t n)
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	size_t	len;
-	size_t	i;
-	size_t	j;
+	ssize_t	i;
+	ssize_t	j;
 	char	*joined;
 
 	if (!s1 && !s2)
@@ -102,18 +102,12 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	len = ft_strlen(s1) + ft_strlen(s2);
 	if (!(joined = malloc(len + 1)))
 		return (NULL);
-	i = 0;
-	while (s1[i])
-	{
+	i = -1;
+	while (s1[++i])
 		joined[i] = s1[i];
-		i++;
-	}
-	j = 0;
-	while (s2[j])
-	{
+	j = -1;
+	while (s2[++j])
 		joined[i + j] = s2[j];
-		j++;
-	}
 	joined[i + j] = '\0';
 	return (joined);
 }
