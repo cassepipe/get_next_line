@@ -6,7 +6,7 @@
 /*   By: tpouget <cassepipe@ymail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 17:55:59 by tpouget           #+#    #+#             */
-/*   Updated: 2020/08/21 18:33:39 by tpouget          ###   ########.fr       */
+/*   Updated: 2020/08/22 11:01:42 by tpouget          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int			get_next_line(int fd, char **line)
 	size_t		bufsize;
 	long		line_len;
 
-	if (fd < 0 || BUFFER_SIZE < 1)
+	if (fd < 0 || BUFFER_SIZE < 1 || !line)
 		return (-1);
 	if (!buffer[fd])
 		if (!(buffer[fd] = ft_calloc(BUFFER_SIZE + 1, sizeof(char))))
