@@ -6,7 +6,7 @@
 /*   By: tpouget <cassepipe@ymail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/21 17:55:59 by tpouget           #+#    #+#             */
-/*   Updated: 2020/08/26 16:52:15 by tpouget          ###   ########.fr       */
+/*   Updated: 2020/08/26 19:06:55 by tpouget          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,12 @@ int			get_next_line(int fd, char **line)
 	line_len = newline ? (size_t)(newline - buffer[fd]) : bufsize;
 	if (!(*line = malloc(line_len + 1)))
 		return (-1);
-	ft_memmove(*line, buffer[fd], line_len);
+	ft_strlcpy(*line, buffer[fd], line_len + 1);
 	(*line)[line_len] = 0;
 	printbuffer(buffer[fd], bufsize);
 	if(newline)
-		ft_memmove(buffer[fd], newline + 1, bufsize - line_len - 1);
+		ft_strlcpy(buffer[fd], newline + 1, bufsize - line_len - 1);
+	printbuffer(buffer[fd], bufsize);
 	if (!newline)
 	{
 		free(buffer[fd]);
