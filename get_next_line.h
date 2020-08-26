@@ -6,7 +6,7 @@
 /*   By: tpouget <cassepipe@ymail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/08 16:20:06 by tpouget           #+#    #+#             */
-/*   Updated: 2020/08/21 18:11:36 by tpouget          ###   ########.fr       */
+/*   Updated: 2020/08/26 16:51:39 by tpouget          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,11 @@
 size_t	ft_strlen(const char *s);
 void	*ft_calloc(size_t nmemb, size_t size);
 char	*ft_strchr(const char *s, int c);
+char	*ft_memmove(char *dst, const char *src, size_t n);
 char	*ft_strndup(const char *s, size_t n);
 char	*ft_strjoin_and_free(const char *s1, const char *s2);
 int		get_next_line(int fd, char **line);
+
+void	printbuffer(char*, size_t);
 
 #endif

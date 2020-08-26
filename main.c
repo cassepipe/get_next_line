@@ -1,9 +1,53 @@
-#include <stdio.h>
 #include "get_next_line.h"
+#include <stdio.h>
 
 int main(void)
 {
-	FILE *dest =  fopen("output.txt", "w");
+	char *line = NULL;
+	FILE *file;
+	file = fopen("input.txt", "r");
+	int fd = fileno(file);
+	int ret;
+
+	for (int i = 0;  i < 9; i++)
+	{
+		ret = get_next_line(fd, &line);
+		printf("Function returned %d\n", ret);
+		//printbuffer(line, ft_strlen(line));
+		*line ? printf("[%d] %s\n", ret, line) : printf("[%d] Empty string\n", ret);
+		free(line);
+	}
+	fclose(file);
+	return (0);
+}
+
+/*int main(void)*/
+/*{*/
+
+	/*FILE *dest =  fopen("output.txt", "w");*/
+
+	/*char *line = NULL;*/
+	/*FILE *src = fopen("input.txt", "r");*/
+	/*int fd = fileno(src);*/
+
+	/*while (get_next_line(fd, &line))*/
+	/*{*/
+	/*//	printf("%s\n", line);*/
+		/*fprintf(dest, "%s\n", line);*/
+		/*free(line);*/
+		/*line = NULL;*/
+	/*}*/
+	/*//printf("%s", line);*/
+	/*[>fprintf(dest, "%s", line);<]*/
+	/*[>free(line);<]*/
+
+	/*fclose(src);*/
+	/*return (0);*/
+/*}*/
+
+/*int main(void)*/
+/*{*/
+	/*FILE *dest =  fopen("output.txt", "a");*/
 
 	/*static char *lines[3];*/
 	/*FILE *src1 = fopen("1.txt", "r");*/
@@ -18,30 +62,16 @@ int main(void)
 	/*{*/
 		/*int j = 0;*/
 		/*while(j <= i)*/
-			/*get_next_line(fds[i], &lines[j++]);*/
+		/*{*/
+			/*get_next_line(fds[i], &lines[j]);*/
+			/*j++;*/
+		/*}*/
+		/*//printf("%s\n", lines[i]);*/
 		/*fprintf(dest, "%s\n", lines[i]);*/
-		/*free(lines[0]);*/
-		/*free(lines[1]);*/
-		/*free(lines[2]);*/
 	/*}*/
 	/*fclose(src1);*/
 	/*fclose(src2);*/
 	/*fclose(src3);*/
 	/*fclose(dest);*/
+/*}*/
 
-	char *line = NULL;
-	FILE *src = fopen("input.txt", "r");
-	int fd = fileno(src);
-
-	while (get_next_line(fd, &line))
-	{
-//		printf("%s\n", line);
-		fprintf(dest, "%s\n", line);
-		free(line);
-		line = NULL;
-	}
-	free(line);
-	fclose(src);
-
-	return (0);
-}

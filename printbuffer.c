@@ -6,7 +6,7 @@
 /*   By: tpouget <cassepipe@ymail.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/01 10:48:06 by tpouget           #+#    #+#             */
-/*   Updated: 2020/08/16 10:21:37 by tpouget          ###   ########.fr       */
+/*   Updated: 2020/08/26 15:32:16 by tpouget          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static long	ft_10powerof(long n)
 	return (result);
 }
 
-char		*ft_itoa(int n)
+static char		*ft_itoa(int n)
 {
 	long nbr;
 	long digit;
@@ -63,7 +63,7 @@ void	printbuffer(char *buffer, size_t size)
 		if (!buffer[i])
 			write(1, "\\0", 2);
 		else if (buffer[i] == '\n')
-			write(1, "\\", 2);
+			write(1, "\\", 1);
 		else
 			write(1, &buffer[i], 1);
 		write(1, " ", 1);
