@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tpouget <cassepipe@ymail.com>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/21 17:55:59 by tpouget           #+#    #+#             */
-/*   Updated: 2020/08/26 19:06:55 by tpouget          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <string.h>
@@ -20,7 +9,7 @@ static int	grow_buffer_until_newline(int fd, char **buffer,
 	char		*new_buffer;
 	ssize_t		bytes_read;
 
-	printbuffer(*buffer, *bufsize);
+	/*printbuffer(*buffer, *bufsize);*/
 	while (!(*newline = ft_strchr(*buffer, '\n')))
 	{
 		if (!(new_buffer = malloc(BUFFER_SIZE + 1)))
@@ -39,7 +28,7 @@ static int	grow_buffer_until_newline(int fd, char **buffer,
 		if (!(*buffer = ft_strjoin_and_free(*buffer, new_buffer)))
 			return (0);
 		*bufsize += bytes_read;
-		printbuffer(*buffer, *bufsize);
+		//printbuffer(*buffer, *bufsize);
 	}
 	return (1);
 }
@@ -48,7 +37,7 @@ int			get_next_line(int fd, char **line)
 {
 	static char	*buffer[OPEN_MAX];
 	char		*newline;
-	size_t		bufsize;
+	size_t		buf_len;
 	long		line_len;
 
 	if (fd < 0 || BUFFER_SIZE < 1 || !line)
@@ -56,18 +45,15 @@ int			get_next_line(int fd, char **line)
 	if (!buffer[fd] && !(buffer[fd] = ft_calloc(BUFFER_SIZE + 1, sizeof(char))))
 		return (-1);
 	newline = NULL;
-	bufsize = ft_strlen(buffer[fd]) + 1;
-	if (!grow_buffer_until_newline(fd, &buffer[fd], &bufsize, &newline))
+	buf_len = ft_strlen(buffer[fd]);
+	if (!grow_buffer_until_newline(fd, &buffer[fd], &buf_len, &newline))
 		return (-1);
-	line_len = newline ? (size_t)(newline - buffer[fd]) : bufsize;
+	line_len = newline ? (size_t)(newline - buffer[fd]) : buf_len;
 	if (!(*line = malloc(line_len + 1)))
 		return (-1);
 	ft_strlcpy(*line, buffer[fd], line_len + 1);
-	(*line)[line_len] = 0;
-	printbuffer(buffer[fd], bufsize);
 	if(newline)
-		ft_strlcpy(buffer[fd], newline + 1, bufsize - line_len - 1);
-	printbuffer(buffer[fd], bufsize);
+		ft_strlcpy(buffer[fd], newline + 1, buf_len - line_len);
 	if (!newline)
 	{
 		free(buffer[fd]);

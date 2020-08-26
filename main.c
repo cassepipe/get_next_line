@@ -12,8 +12,6 @@ int main(void)
 	for (int i = 0;  i < 9; i++)
 	{
 		ret = get_next_line(fd, &line);
-		printf("Function returned %d\n", ret);
-		//printbuffer(line, ft_strlen(line));
 		*line ? printf("[%d] %s\n", ret, line) : printf("[%d] Empty string\n", ret);
 		free(line);
 	}
